@@ -33,12 +33,6 @@ const PostForm = () => {
       type: ADD_POST_REQUEST,
       data: {
         text,
-        // 게시글 작성자는 현재 로그인한 작성자이다.
-        User: {
-          id: me.id,
-          nickname: me.nickname,
-          profileImageUrl: me.profileImageUrl,
-        },
       },
     });
   };
