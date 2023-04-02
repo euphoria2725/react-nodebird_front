@@ -18,13 +18,16 @@ import {
 
 // LOG_IN
 const logInAPI = (data) => {
-  return axios.post("http://localhost:3000/user/login", data);
+  return axios.post("/user/login", data);
 };
 
 function* logIn(action) {
   try {
     const result = yield call(logInAPI, action.data);
-    yield put({ type: LOG_IN_SUCCESS, data: result.data });
+    yield put({
+      type: LOG_IN_SUCCESS,
+      data: result.data,
+    });
   } catch (err) {
     console.error(err);
     yield put({
@@ -35,9 +38,13 @@ function* logIn(action) {
 }
 
 // LOG_OUT
+const logOutAPI = () => {
+  return axios.post("/user/logout");
+};
+
 function* logOut() {
   try {
-    yield delay(1000);
+    yield call(logOutAPI);
     yield put({
       type: LOG_OUT_SUCCESS,
     });
@@ -52,7 +59,7 @@ function* logOut() {
 
 // SIGN_UP
 function signUpAPI(data) {
-  return axios.post("http://localhost:3000/user", data);
+  return axios.post("/user", data);
 }
 
 function* signUp(action) {
