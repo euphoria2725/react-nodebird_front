@@ -32,13 +32,8 @@ const CommentForm = ({ post }) => {
     dispatch({
       type: ADD_COMMENT_REQUEST,
       data: {
-        postId: post.id,
         content: commentText,
-        User: {
-          id: me.id,
-          nickname: me.nickname,
-          profileImageUrl: me.profileImageUrl,
-        },
+        postId: post.id,
       },
     });
   };

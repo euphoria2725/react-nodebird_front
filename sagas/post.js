@@ -19,7 +19,7 @@ import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from "../reducers/user";
 
 // LOAD_POST
 function loadPostsAPI() {
-  return axios.get("http://localhost:3000/posts");
+  return axios.get("/posts");
 }
 
 function* loadPosts() {
@@ -90,7 +90,7 @@ function* removePost(action) {
 
 // ADD_COMMENT
 function addCommentAPI(data) {
-  return axios.post(`http://localhost:3000/post/${data.postId}/comment`, data);
+  return axios.post(`/post/${data.postId}/comment`, data);
 }
 
 function* addComment(action) {
