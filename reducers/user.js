@@ -1,5 +1,6 @@
 // define action type
 // LOG_IN
+// LOG_IN
 export const LOG_IN_REQUEST = "LOG_IN_REQUEST";
 export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
 export const LOG_IN_FAILURE = "LOG_IN_FAILURE";
@@ -14,6 +15,10 @@ export const SIGN_UP_FAILURE = "SIGN_UP_FAILURE";
 // ADD_POST_TO_ME
 export const ADD_POST_TO_ME = "ADD_POST_TO_ME";
 export const REMOVE_POST_OF_ME = "REMOVE_POST_OF_ME";
+// LOAD_USER_REQUEST
+export const LOAD_USER_REQUEST = "LOAD_USER_REQUEST";
+export const LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS";
+export const LOAD_USER_FAILURE = "LOAD_USER_FAILURE";
 
 export const loginRequestAction = (data) => {
   return {
@@ -45,6 +50,10 @@ export const initialState = {
   signUpLoading: false,
   signUpDone: false,
   signUpError: null,
+  // LOAD_USER
+  loadUserLoading: false,
+  loadUserDone: false,
+  loadUserError: null,
 };
 
 export default (state = initialState, action) => {
@@ -128,6 +137,26 @@ export default (state = initialState, action) => {
             return post.id !== action.data;
           }),
         },
+      };
+    case LOAD_USER_REQUEST:
+      return {
+        ...state,
+        loadUserLoading: true,
+        loadUserDone: false,
+        loadUserError: null,
+      };
+    case LOAD_USER_SUCCESS:
+      return {
+        ...state,
+        loadUserLoading: false,
+        loadUserDone: true,
+        me: action.data,
+      };
+    case LOAD_USER_FAILURE:
+      return {
+        ...state,
+        loadUserLoading: false,
+        loadUserError: action.error,
       };
     default:
       return state;
