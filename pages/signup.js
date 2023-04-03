@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Head from "next/head";
 import Router from "next/router";
@@ -6,11 +6,18 @@ import { Form, Input, Checkbox, Button } from "antd";
 
 import AppLayout from "../components/AppLayout";
 import useInput from "../hooks/useInput";
-import { SIGN_UP_REQUEST } from "../reducers/user";
+import {
+  SIGN_UP_REQUEST,
+  UPLOAD_PROFILE_IMAGE_REQUEST,
+} from "../reducers/user";
 
 const Signup = () => {
   const dispatch = useDispatch();
-  const { me, signUpDone, signUpError } = useSelector((state) => state.user);
+  const { me, signUpDone, signUpError, profileImageUrl } = useSelector(
+    (state) => state.user
+  );
+
+  const profileImageInput = useRef();
 
   const [passwordCheck, setPasswordCheck] = useState("");
   const [passwordError, setPasswordError] = useState(false);
@@ -30,7 +37,6 @@ const Signup = () => {
   }, [me && me.id]);
 
   useEffect(() => {
-    console.log(signUpDone);
     if (signUpDone) {
       alert("회원가입이 완료되었습니다.");
       Router.push("/");
@@ -42,6 +48,21 @@ const Signup = () => {
       alert(signUpError);
     }
   }, [signUpError]);
+
+  const onClickProflieImageUpload = () => {
+    profileImageInput.current.click();
+  };
+
+  const onChangeImage = (e) => {
+    const imageFormData = new FormData();
+    [].forEach.call(e.target.files, (f) => {
+      imageFormData.append("image", f);
+    });
+    dispatch({
+      type: UPLOAD_PROFILE_IMAGE_REQUEST,
+      data: imageFormData,
+    });
+  };
 
   const onChangePasswordCheck = (e) => {
     setPasswordCheck(e.target.value);
@@ -60,7 +81,15 @@ const Signup = () => {
     if (!term) {
       return setTermError(true);
     }
-    dispatch({ type: SIGN_UP_REQUEST, data: { email, password, nickname } });
+    dispatch({
+      type: SIGN_UP_REQUEST,
+      data: {
+        email,
+        password,
+        nickname,
+        profileImageUrl: `http://localhost:3000/${profileImageUrl.filename}`,
+      },
+    });
   };
 
   return (
@@ -70,7 +99,11 @@ const Signup = () => {
       </Head>
       {/*회원가입*/}
       <AppLayout>
-        <Form onFinish={onSubmit} style={{ padding: 10 }}>
+        <Form
+          encType="multipart/form-data"
+          onFinish={onSubmit}
+          style={{ padding: 10 }}
+        >
           <div>
             <label htmlFor="user-email">이메일</label>
             <br />
@@ -125,6 +158,25 @@ const Signup = () => {
               <div style={{ color: "red" }}>약관에 동의하셔야 합니다.</div>
             )}
           </div>
+          <div>
+            <input
+              type="file"
+              ref={profileImageInput}
+              onChange={onChangeImage}
+              hidden
+            />
+            <Button onClick={onClickProflieImageUpload}>
+              Upload Profile Image
+            </Button>
+          </div>
+          {profileImageUrl && (
+            <div>
+              <img
+                src={`http://localhost:3000/${profileImageUrl.filename}`}
+                style={{ width: "200px" }}
+              />
+            </div>
+          )}
           <div style={{ marginTop: 10 }}>
             <Button type="primary" htmlType="submit">
               가입하기

@@ -10,6 +10,7 @@ const PostForm = () => {
     (state) => state.post
   );
   const { me } = useSelector((state) => state.user);
+
   const imageInput = useRef();
 
   const [text, setText] = useState("");

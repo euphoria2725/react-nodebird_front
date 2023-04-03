@@ -15,10 +15,14 @@ export const SIGN_UP_FAILURE = "SIGN_UP_FAILURE";
 // ADD_POST_TO_ME
 export const ADD_POST_TO_ME = "ADD_POST_TO_ME";
 export const REMOVE_POST_OF_ME = "REMOVE_POST_OF_ME";
-// LOAD_USER_REQUEST
+// LOAD_USER
 export const LOAD_USER_REQUEST = "LOAD_USER_REQUEST";
 export const LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS";
 export const LOAD_USER_FAILURE = "LOAD_USER_FAILURE";
+// UPLOAD_PROFILE_IMAGE
+export const UPLOAD_PROFILE_IMAGE_REQUEST = "UPLOAD_PROFILE_IMAGE_REQUEST";
+export const UPLOAD_PROFILE_IMAGE_SUCCESS = "UPLOAD_PROFILE_IMAGE_SUCCESS";
+export const UPLOAD_PROFILE_IMAGE_FAILURE = "UPLOAD_PROFILE_IMAGE_FAILURE";
 
 export const loginRequestAction = (data) => {
   return {
@@ -38,6 +42,7 @@ export const initialState = {
   me: null,
   signUpData: {},
   loginData: {},
+  profileImageUrl: null,
   // LOG_IN
   logInLoading: false,
   logInDone: false,
@@ -54,6 +59,10 @@ export const initialState = {
   loadUserLoading: false,
   loadUserDone: false,
   loadUserError: null,
+  // UPLOAD_PROFILE_IMAGE
+  uploadProfileImageLoading: false,
+  uploadProfileImageDone: false,
+  uploadProfileImageError: null,
 };
 
 export default (state = initialState, action) => {
@@ -120,6 +129,7 @@ export default (state = initialState, action) => {
         signUpLoading: false,
         signUpError: action.error,
       };
+    // ADD_POST_TO_ME
     case ADD_POST_TO_ME:
       return {
         ...state,
@@ -128,6 +138,7 @@ export default (state = initialState, action) => {
           Posts: [action.data, ...state.me.Posts],
         },
       };
+    // REMOVE_POST_OF_ME
     case REMOVE_POST_OF_ME:
       return {
         ...state,
@@ -138,6 +149,7 @@ export default (state = initialState, action) => {
           }),
         },
       };
+    // LOAD_USER
     case LOAD_USER_REQUEST:
       return {
         ...state,
@@ -157,6 +169,27 @@ export default (state = initialState, action) => {
         ...state,
         loadUserLoading: false,
         loadUserError: action.error,
+      };
+    // UPLOAD_PROFILE_IMAGE
+    case UPLOAD_PROFILE_IMAGE_REQUEST:
+      return {
+        ...state,
+        uploadProfileImageLoading: true,
+        uploadProfileImageDone: false,
+        uploadProfileImageError: null,
+      };
+    case UPLOAD_PROFILE_IMAGE_SUCCESS:
+      return {
+        ...state,
+        uploadProfileImageLoading: false,
+        uploadProfileImageDone: true,
+        profileImageUrl: action.data,
+      };
+    case UPLOAD_PROFILE_IMAGE_FAILURE:
+      return {
+        ...state,
+        uploadProfileImageLoading: false,
+        uploadProfileImageError: action.error,
       };
     default:
       return state;
