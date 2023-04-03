@@ -42,7 +42,7 @@ export const initialState = {
   me: null,
   signUpData: {},
   loginData: {},
-  profileImageUrl: null,
+  profileImagePath: null,
   // LOG_IN
   logInLoading: false,
   logInDone: false,
@@ -183,7 +183,7 @@ export default (state = initialState, action) => {
         ...state,
         uploadProfileImageLoading: false,
         uploadProfileImageDone: true,
-        profileImageUrl: action.data,
+        profileImagePath: action.data,
       };
     case UPLOAD_PROFILE_IMAGE_FAILURE:
       return {
@@ -191,6 +191,7 @@ export default (state = initialState, action) => {
         uploadProfileImageLoading: false,
         uploadProfileImageError: action.error,
       };
+    // DEFAULT
     default:
       return state;
   }

@@ -13,7 +13,7 @@ import {
 
 const Signup = () => {
   const dispatch = useDispatch();
-  const { me, signUpDone, signUpError, profileImageUrl } = useSelector(
+  const { me, signUpDone, signUpError, profileImagePath } = useSelector(
     (state) => state.user
   );
 
@@ -87,7 +87,7 @@ const Signup = () => {
         email,
         password,
         nickname,
-        profileImageUrl: `http://localhost:3000/${profileImageUrl.filename}`,
+        profileImageUrl: `http://localhost:3000/${profileImagePath.filename}`,
       },
     });
   };
@@ -169,10 +169,10 @@ const Signup = () => {
               Upload Profile Image
             </Button>
           </div>
-          {profileImageUrl && (
+          {profileImagePath && (
             <div>
               <img
-                src={`http://localhost:3000/${profileImageUrl.filename}`}
+                src={`http://localhost:3000/${profileImagePath.filename}`}
                 style={{ width: "200px" }}
               />
             </div>
