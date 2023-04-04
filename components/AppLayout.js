@@ -60,7 +60,7 @@ const rightMenuItems = [
 ];
 
 const ChildrenWrapper = styled.div`
-  max-width: 600px;
+  width: 600px;
 `;
 
 const ChildrenContainer = styled.div`
