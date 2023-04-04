@@ -4,10 +4,15 @@ import styled from "styled-components";
 
 const PostImages = ({ images }) => {
   return (
-    <Carousel>
+    <Carousel autoplay>
       {images.map((image, idx) => {
         return (
-          <img src={image.src} alt="post-img" role="presentation" key={idx} />
+          <img
+            src={"http://localhost:3000/" + image.src}
+            alt="post-img"
+            role="presentation"
+            key={idx}
+          />
         );
       })}
     </Carousel>

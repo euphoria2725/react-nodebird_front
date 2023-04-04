@@ -1,5 +1,6 @@
 // define action type
 // LOAD_POSTS
+// LOAD_POSTS
 export const LOAD_POSTS_REQUEST = "LOAD_POSTS_REQUEST";
 export const LOAD_POSTS_SUCCESS = "LOAD_POSTS_SUCCESS";
 export const LOAD_POSTS_FAILURE = "LOAD_POSTS_FAILURE";
@@ -15,12 +16,15 @@ export const REMOVE_POST_FAILURE = "REMOVE_POST_FAILURE";
 export const ADD_COMMENT_REQUEST = "ADD_COMMENT_REQUEST";
 export const ADD_COMMENT_SUCCESS = "ADD_COMMENT_SUCCESS";
 export const ADD_COMMENT_FAILURE = "ADD_COMMENT_FAILURE";
+// UPLOAD_POST_IMAGES
+export const UPLOAD_POST_IMAGES_REQUEST = "UPLOAD_POST_IMAGES_REQUEST";
+export const UPLOAD_POST_IMAGES_SUCCESS = "UPLOAD_POST_IMAGES_SUCCESS";
+export const UPLOAD_POST_IMAGES_FAILURE = "UPLOAD_POST_IMAGES_FAILURE";
 
 // define state
 export const initialState = {
   mainPosts: [],
-  imagePaths: [],
-  postAdded: false,
+  postImagesPaths: [],
   // load-posts
   loadPostsLoading: false,
   loadPostsDone: false,
@@ -37,10 +41,15 @@ export const initialState = {
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
+  // UPLOAD_POST_IMAGES
+  uploadPostImagesLoading: false,
+  uploadPostImagesDone: false,
+  uploadPostImagesError: null,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    // LOAD_POSTS
     case LOAD_POSTS_REQUEST:
       return {
         ...state,
@@ -61,6 +70,7 @@ export default (state = initialState, action) => {
         loadPostsLoading: false,
         loadPostsError: action.error,
       };
+    // ADD_POST
     case ADD_POST_REQUEST:
       return {
         ...state,
@@ -74,6 +84,7 @@ export default (state = initialState, action) => {
         addPostLoading: false,
         addPostDone: true,
         mainPosts: [action.data, ...state.mainPosts],
+        postImagesPaths: [],
       };
     case ADD_POST_FAILURE:
       return {
@@ -81,6 +92,7 @@ export default (state = initialState, action) => {
         addPostLoading: false,
         addPostError: action.error,
       };
+    // REMOVE_POST
     case REMOVE_POST_REQUEST:
       return {
         ...state,
@@ -103,6 +115,7 @@ export default (state = initialState, action) => {
         removePostLoading: false,
         removePostError: action.error,
       };
+    // ADD_COMMENT
     case ADD_COMMENT_REQUEST:
       return {
         ...state,
@@ -137,6 +150,28 @@ export default (state = initialState, action) => {
         addCommentLoading: false,
         addCommentError: action.error,
       };
+    // UPLOAD_POST_IMAGES
+    case UPLOAD_POST_IMAGES_REQUEST:
+      return {
+        ...state,
+        uploadPostImagesLoading: true,
+        uploadPostImagesDone: false,
+        uploadPostImagesError: null,
+      };
+    case UPLOAD_POST_IMAGES_SUCCESS:
+      return {
+        ...state,
+        uploadPostImagesLoading: false,
+        uploadPostImagesDone: true,
+        postImagesPaths: action.data,
+      };
+    case UPLOAD_POST_IMAGES_FAILURE:
+      return {
+        ...state,
+        uploadPostImagesLoading: false,
+        uploadPostImagesError: action.error,
+      };
+    // DEFAULT
     default: {
       return state;
     }
