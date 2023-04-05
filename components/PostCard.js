@@ -16,7 +16,7 @@ import FollowButton from "./FollowButton";
 import CommentForm from "./CommentForm";
 import PostCardContent from "./PostCardContent";
 
-import { REMOVE_POST_REQUEST } from "../reducers/post";
+import { REMOVE_POST_REQUEST, LIKE_POST_REQUEST } from "../reducers/post";
 
 const CardWrapper = styled.div`
   margin-bottom: 20px;
@@ -29,19 +29,28 @@ const ButtonWrapper = styled.span`
 
 const PostCard = ({ post }) => {
   const dispatch = useDispatch();
-  const { me } = useSelector((state) => state.user);
+  const id = useSelector((state) => state.user.me?.id);
   const { removePostLoading } = useSelector((state) => state.post);
 
-  const [liked, setLiked] = useState(false);
-  const [commentFormOpened, setCommentFormOpened] = useState(false);
+  const liked = post.Likers.find((l) => l.id === id);
 
-  const onToggleLike = () => {
-    setLiked((prev) => !prev);
-  };
+  const [commentFormOpened, setCommentFormOpened] = useState(false);
 
   const onToggleComment = () => {
     setCommentFormOpened((prev) => !prev);
   };
+
+  const onLike = () => {
+    if (!id) {
+      return alert("로그인이 필요합니다.");
+    }
+    dispatch({
+      type: LIKE_POST_REQUEST,
+      data: post.id,
+    });
+  };
+
+  const onUnlike = () => {};
 
   const onRemovePost = () => {
     dispatch({
@@ -54,25 +63,24 @@ const PostCard = ({ post }) => {
     <CardWrapper key={post.id}>
       <Card
         actions={[
-          <RetweetOutlined key="retweet" />,
-          liked ? (
-            <HeartTwoTone
-              key="heart"
-              twoToneColor="#eb2f96"
-              onClick={onToggleLike}
-            />
-          ) : (
-            <HeartOutlined key="heart" onClick={onToggleLike} />
-          ),
           <div key="message">
             <MessageOutlined onClick={onToggleComment} />
             {/* <ButtonWrapper>{post.Comments.length}</ButtonWrapper> */}
+          </div>,
+          <RetweetOutlined key="retweet" />,
+          <div key="heart">
+            {liked ? (
+              <HeartTwoTone twoToneColor="#eb2f96" onClick={onUnlike} />
+            ) : (
+              <HeartOutlined key="heart" onClick={onLike} />
+            )}
+            <ButtonWrapper>{post.Likers.length}</ButtonWrapper>
           </div>,
           <Popover
             key="ellipsis"
             content={
               <Button.Group>
-                {me && me.id === post.User.id ? (
+                {id === post.User.id ? (
                   <>
                     <Button>수정</Button>
                     <Button
@@ -92,7 +100,7 @@ const PostCard = ({ post }) => {
             <EllipsisOutlined />
           </Popover>,
         ]}
-        extra={me && <FollowButton post={post} />}
+        extra={id && <FollowButton post={post} />}
       >
         <Card.Meta
           avatar={<Avatar src={post.User.profile_image_url}></Avatar>}

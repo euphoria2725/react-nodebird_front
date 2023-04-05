@@ -20,6 +20,9 @@ export const ADD_COMMENT_FAILURE = "ADD_COMMENT_FAILURE";
 export const UPLOAD_POST_IMAGES_REQUEST = "UPLOAD_POST_IMAGES_REQUEST";
 export const UPLOAD_POST_IMAGES_SUCCESS = "UPLOAD_POST_IMAGES_SUCCESS";
 export const UPLOAD_POST_IMAGES_FAILURE = "UPLOAD_POST_IMAGES_FAILURE";
+export const LIKE_POST_REQUEST = "LIKE_POST_REQUEST";
+export const LIKE_POST_SUCCESS = "LIKE_POST_SUCCESS";
+export const LIKE_POST_FAILURE = "LIKE_POST_FAILURE";
 
 // define state
 export const initialState = {
@@ -45,6 +48,10 @@ export const initialState = {
   uploadPostImagesLoading: false,
   uploadPostImagesDone: false,
   uploadPostImagesError: null,
+  // LIKE_POST
+  likePostLoading: false,
+  likePostDone: false,
+  likePostError: null,
 };
 
 export default (state = initialState, action) => {
@@ -170,6 +177,31 @@ export default (state = initialState, action) => {
         ...state,
         uploadPostImagesLoading: false,
         uploadPostImagesError: action.error,
+      };
+    // LIKE_POST
+    case LIKE_POST_REQUEST:
+      return {
+        ...state,
+        likePostLoading: true,
+        likePostDone: false,
+        likePostError: null,
+      };
+    case LIKE_POST_SUCCESS:
+      return {
+        ...state,
+        likePostLoading: false,
+        likePostDone: true,
+        mainPosts: state.mainPosts.map((p) => {
+          return p.id === action.data.post_id
+            ? { ...p, Likers: [...p.Likers, { id: action.data.user_id }] }
+            : p;
+        }),
+      };
+    case LIKE_POST_FAILURE:
+      return {
+        ...state,
+        likePostLoading: false,
+        likePostError: action.error,
       };
     // DEFAULT
     default: {
