@@ -40,8 +40,6 @@ export const logoutRequestAction = () => {
 // define state
 export const initialState = {
   me: null,
-  signUpData: {},
-  loginData: {},
   profileImagePath: null,
   // LOG_IN
   logInLoading: false,

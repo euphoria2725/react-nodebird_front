@@ -36,7 +36,7 @@ const UserProfile = () => {
       ]}
     >
       <Card.Meta
-        avatar={<Avatar src={me.profileImageUrl}></Avatar>}
+        avatar={<Avatar src={me.profile_image_url}></Avatar>}
         title={me.nickname}
         description={
           <Button

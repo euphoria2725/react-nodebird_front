@@ -66,7 +66,7 @@ const PostCard = ({ post }) => {
           ),
           <div key="message">
             <MessageOutlined onClick={onToggleComment} />
-            <ButtonWrapper>{post.Comments.length}</ButtonWrapper>
+            {/* <ButtonWrapper>{post.Comments.length}</ButtonWrapper> */}
           </div>,
           <Popover
             key="ellipsis"
@@ -95,37 +95,37 @@ const PostCard = ({ post }) => {
         extra={me && <FollowButton post={post} />}
       >
         <Card.Meta
-          avatar={<Avatar src={post.User.profileImageUrl}></Avatar>}
+          avatar={<Avatar src={post.User.profile_image_url}></Avatar>}
           title={post.User.nickname}
           description={
             <>
               <div style={{ marginBottom: 15 }}>
                 {<PostCardContent content={post.content} />}
               </div>
-              {post.Images[0] && <PostImages images={post.Images} />}
+              {/* {post.Images[0] && <PostImages images={post.Images} />} */}
             </>
           }
         />
       </Card>
-      {commentFormOpened && (
-        <>
-          <CommentForm post={post} />
-          <List
-            header={`${post.Comments.length}개의 댓글`}
-            itemLayout="horizontal"
-            dataSource={post.Comments}
-            renderItem={(item) => (
-              <li>
-                <Comment
-                  author={item.User.nickname}
-                  avatar={<Avatar src={item.User.profileImageUrl}></Avatar>}
-                  content={item.content}
-                />
-              </li>
-            )}
-          />
-        </>
-      )}
+      {/* {commentFormOpened && ( */}
+      {/*   <> */}
+      {/*     <CommentForm post={post} /> */}
+      {/*     <List */}
+      {/*       header={`${post.Comments.length}개의 댓글`} */}
+      {/*       itemLayout="horizontal" */}
+      {/*       dataSource={post.Comments} */}
+      {/*       renderItem={(item) => ( */}
+      {/*         <li> */}
+      {/*           <Comment */}
+      {/*             author={item.User.nickname} */}
+      {/*             avatar={<Avatar src={item.User.profileImageUrl}></Avatar>} */}
+      {/*             content={item.content} */}
+      {/*           /> */}
+      {/*         </li> */}
+      {/*       )} */}
+      {/*     /> */}
+      {/*   </> */}
+      {/* )} */}
     </CardWrapper>
   );
 };

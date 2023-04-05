@@ -26,7 +26,7 @@ import {
 
 // LOG_IN
 const logInAPI = (data) => {
-  return axios.post("/user/login", data);
+  return axios.post("/auth/login", data);
 };
 
 function* logIn(action) {
@@ -47,7 +47,7 @@ function* logIn(action) {
 
 // LOG_OUT
 const logOutAPI = () => {
-  return axios.post("/user/logout");
+  return axios.post("/auth/logout");
 };
 
 function* logOut() {
@@ -67,7 +67,7 @@ function* logOut() {
 
 // SIGN_UP
 function signUpAPI(data) {
-  return axios.post("/user", data);
+  return axios.post("/users", data);
 }
 
 function* signUp(action) {
@@ -88,7 +88,7 @@ function* signUp(action) {
 
 // LOAD_USER
 function loadUserAPI() {
-  return axios.get("/user");
+  return axios.get("/users");
 }
 
 function* loadUser() {
@@ -109,7 +109,7 @@ function* loadUser() {
 
 // UPLOAD_PROFILE_IMAGE
 function uploadProfileImageAPI(data) {
-  return axios.post("/user/image", data);
+  return axios.post("/users/image", data);
 }
 
 function* uploadProfileImage(action) {

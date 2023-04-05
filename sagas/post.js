@@ -43,8 +43,7 @@ function* loadPosts() {
 
 // ADD_POST
 function addPostAPI(data) {
-  console.log("data", data);
-  return axios.post("/post", data);
+  return axios.post("/posts", data);
 }
 
 function* addPost(action) {
@@ -94,7 +93,7 @@ function* removePost(action) {
 
 // ADD_COMMENT
 function addCommentAPI(data) {
-  return axios.post(`/post/${data.postId}/comment`, data);
+  return axios.post(`/posts/${data.postId}/comment`, data);
 }
 
 function* addComment(action) {
@@ -114,7 +113,7 @@ function* addComment(action) {
 }
 
 function uploadPostImagesAPI(data) {
-  return axios.post("/post/images", data);
+  return axios.post("/posts/images", data);
 }
 
 // UPLOAD_POST_IMAGES

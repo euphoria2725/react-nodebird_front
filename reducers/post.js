@@ -25,19 +25,19 @@ export const UPLOAD_POST_IMAGES_FAILURE = "UPLOAD_POST_IMAGES_FAILURE";
 export const initialState = {
   mainPosts: [],
   postImagesPaths: [],
-  // load-posts
+  // LOAD_POSTS
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
-  // add-post
+  // ADD_POST
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
-  // remove-post
+  // REMOVE_POST
   removePostLoading: false,
   removePostDone: false,
   removePostError: null,
-  // add-comment
+  // ADD_COMMENT
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
