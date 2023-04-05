@@ -23,6 +23,14 @@ export const LOAD_USER_FAILURE = "LOAD_USER_FAILURE";
 export const UPLOAD_PROFILE_IMAGE_REQUEST = "UPLOAD_PROFILE_IMAGE_REQUEST";
 export const UPLOAD_PROFILE_IMAGE_SUCCESS = "UPLOAD_PROFILE_IMAGE_SUCCESS";
 export const UPLOAD_PROFILE_IMAGE_FAILURE = "UPLOAD_PROFILE_IMAGE_FAILURE";
+// FOLLOW
+export const FOLLOW_REQUEST = "FOLLOW_REQUEST";
+export const FOLLOW_SUCCESS = "FOLLOW_SUCCESS";
+export const FOLLOW_FAILURE = "FOLLOW_FAILURE";
+// UNFOLLOW
+export const UNFOLLOW_REQUEST = "UNFOLLOW_REQUEST";
+export const UNFOLLOW_SUCCESS = "UNFOLLOW_SUCCESS";
+export const UNFOLLOW_FAILURE = "UNFOLLOW_FAILURE";
 
 export const loginRequestAction = (data) => {
   return {
@@ -61,6 +69,14 @@ export const initialState = {
   uploadProfileImageLoading: false,
   uploadProfileImageDone: false,
   uploadProfileImageError: null,
+  // FOLLOW
+  followLoading: false,
+  followDone: false,
+  followError: null,
+  // UNFOLLOW
+  unfollowLoading: false,
+  unfollowDone: false,
+  unfollowError: null,
 };
 
 export default (state = initialState, action) => {
@@ -188,6 +204,56 @@ export default (state = initialState, action) => {
         ...state,
         uploadProfileImageLoading: false,
         uploadProfileImageError: action.error,
+      };
+    // FOLLOW
+    case FOLLOW_REQUEST:
+      return {
+        ...state,
+        followLoading: true,
+        followDone: false,
+        followError: null,
+      };
+    case FOLLOW_SUCCESS:
+      return {
+        ...state,
+        followLoading: false,
+        followDone: true,
+        me: {
+          ...state.me,
+          Followings: [...state.me.Followings, action.data],
+        },
+      };
+    case FOLLOW_FAILURE:
+      return {
+        ...state,
+        followLoading: false,
+        followError: action.error,
+      };
+    // UNFOLLOW
+    case UNFOLLOW_REQUEST:
+      return {
+        ...state,
+        unfollowLoading: true,
+        unfollowDone: false,
+        unfollowError: null,
+      };
+    case UNFOLLOW_SUCCESS:
+      return {
+        ...state,
+        unfollowLoading: false,
+        unfollowDone: true,
+        me: {
+          ...state.me,
+          Followings: state.me.Followings.filter(
+            (f) => f.id !== action.data.id
+          ),
+        },
+      };
+    case UNFOLLOW_FAILURE:
+      return {
+        ...state,
+        unfollowLoading: false,
+        unfollowError: action.error,
       };
     // DEFAULT
     default:

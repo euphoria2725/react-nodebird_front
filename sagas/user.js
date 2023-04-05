@@ -22,6 +22,14 @@ import {
   UPLOAD_PROFILE_IMAGE_REQUEST,
   UPLOAD_PROFILE_IMAGE_SUCCESS,
   UPLOAD_PROFILE_IMAGE_FAILURE,
+  // FOLLOW
+  FOLLOW_REQUEST,
+  FOLLOW_SUCCESS,
+  FOLLOW_FAILURE,
+  // UNFOLLOW
+  UNFOLLOW_REQUEST,
+  UNFOLLOW_SUCCESS,
+  UNFOLLOW_FAILURE,
 } from "../reducers/user";
 
 // LOG_IN
@@ -128,6 +136,49 @@ function* uploadProfileImage(action) {
   }
 }
 
+// FOLLOW
+function followAPI(data) {
+  return axios.post(`/users/${data}/follow`);
+}
+
+function* follow(action) {
+  try {
+    const result = yield call(followAPI, action.data);
+    yield put({
+      type: FOLLOW_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: FOLLOW_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+// UNFOLLOW
+function unfollowAPI(data) {
+  return axios.delete(`/users/${data}/unfollow`);
+}
+
+function* unfollow(action) {
+  try {
+    const result = yield call(unfollowAPI, action.data);
+    yield put({
+      type: UNFOLLOW_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: UNFOLLOW_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+// watch request
 function* watchLogIn() {
   yield takeLatest(LOG_IN_REQUEST, logIn);
 }
@@ -148,6 +199,14 @@ function* watchUploadProfileImage() {
   yield takeLatest(UPLOAD_PROFILE_IMAGE_REQUEST, uploadProfileImage);
 }
 
+function* watchFollow() {
+  yield takeLatest(FOLLOW_REQUEST, follow);
+}
+
+function* watchUnfollow() {
+  yield takeLatest(UNFOLLOW_REQUEST, unfollow);
+}
+
 export default function* userSaga() {
   yield all([
     fork(watchLogIn),
@@ -155,5 +214,7 @@ export default function* userSaga() {
     fork(watchSignUp),
     fork(watchLoadUser),
     fork(watchUploadProfileImage),
+    fork(watchFollow),
+    fork(watchUnfollow),
   ]);
 }
