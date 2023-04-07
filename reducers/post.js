@@ -121,7 +121,7 @@ export default (state = initialState, action) => {
         removePostLoading: false,
         removePostDone: true,
         mainPosts: state.mainPosts.filter((post) => {
-          return post.id !== action.data;
+          return post.id !== action.data.id;
         }),
       };
     case REMOVE_POST_FAILURE:

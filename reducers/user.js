@@ -35,6 +35,10 @@ export const UNFOLLOW_FAILURE = "UNFOLLOW_FAILURE";
 export const REMOVE_FOLLOWER_REQUEST = "REMOVE_FOLLOWER_REQUEST";
 export const REMOVE_FOLLOWER_SUCCESS = "REMOVE_FOLLOWER_SUCCESS";
 export const REMOVE_FOLLOWER_FAILURE = "REMOVE_FOLLOWER_FAILURE";
+// CHANGE_NICKNAME
+export const CHANGE_NICKNAME_REQUEST = "CHANGE_NICKNAME_REQUEST";
+export const CHANGE_NICKNAME_SUCCESS = "CHANGE_NICKNAME_SUCCESS";
+export const CHANGE_NICKNAME_FAILURE = "CHANGE_NICKNAME_FAILURE";
 
 export const loginRequestAction = (data) => {
   return {
@@ -85,6 +89,10 @@ export const initialState = {
   removeFollowerLoading: false,
   removeFollowerDone: false,
   removeFollowerError: null,
+  // CHANGE_NICKNAME
+  changeNicknameLoading: false,
+  changeNicknameDone: false,
+  changeNicknameError: null,
 };
 
 export default (state = initialState, action) => {
@@ -168,7 +176,7 @@ export default (state = initialState, action) => {
         me: {
           ...state.me,
           Posts: state.me.Posts.filter((post) => {
-            return post.id !== action.data;
+            return post.id !== action.data.id;
           }),
         },
       };
@@ -287,6 +295,30 @@ export default (state = initialState, action) => {
         ...state,
         removeFollowerLoading: false,
         removeFollowerError: action.error,
+      };
+    // CHANGE_NICKNAME
+    case CHANGE_NICKNAME_REQUEST:
+      return {
+        ...state,
+        changeNicknameLoading: true,
+        changeNicknameDone: false,
+        changeNicknameError: null,
+      };
+    case CHANGE_NICKNAME_SUCCESS:
+      return {
+        ...state,
+        changeNicknameLoading: false,
+        changeNicknameDone: true,
+        me: {
+          ...state.me,
+          nickname: action.data.nickname,
+        },
+      };
+    case CHANGE_NICKNAME_FAILURE:
+      return {
+        ...state,
+        changeNicknameLoading: false,
+        changeNicknameError: action.error,
       };
     // DEFAULT
     default:
