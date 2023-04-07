@@ -31,13 +31,13 @@ const PostForm = () => {
 
   const onChangeImages = (e) => {
     console.log("images", e.target.images);
-    const imageFormData = new FormData();
+    const formData = new FormData();
     [].forEach.call(e.target.files, (f) => {
-      imageFormData.append("image", f);
+      formData.append("image", f);
     });
     dispatch({
       type: UPLOAD_POST_IMAGES_REQUEST,
-      data: imageFormData,
+      data: formData,
     });
   };
 
@@ -89,7 +89,7 @@ const PostForm = () => {
           Tweet
         </Button>
       </div>
-      {/*업로드할 이미지 미리 보기*/}
+      {/*업로드한 이미지 미리 보기*/}
       {postImagesPaths.map((v, i) => {
         return (
           <div key={v} style={{ display: "inline-block" }}>

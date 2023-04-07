@@ -31,6 +31,10 @@ export const FOLLOW_FAILURE = "FOLLOW_FAILURE";
 export const UNFOLLOW_REQUEST = "UNFOLLOW_REQUEST";
 export const UNFOLLOW_SUCCESS = "UNFOLLOW_SUCCESS";
 export const UNFOLLOW_FAILURE = "UNFOLLOW_FAILURE";
+// REMOVE_FOLLOWER
+export const REMOVE_FOLLOWER_REQUEST = "REMOVE_FOLLOWER_REQUEST";
+export const REMOVE_FOLLOWER_SUCCESS = "REMOVE_FOLLOWER_SUCCESS";
+export const REMOVE_FOLLOWER_FAILURE = "REMOVE_FOLLOWER_FAILURE";
 
 export const loginRequestAction = (data) => {
   return {
@@ -48,7 +52,7 @@ export const logoutRequestAction = () => {
 // define state
 export const initialState = {
   me: null,
-  profileImagePath: null,
+  profileImagePath: null, // 사용자가 회원가입 시 프로필 이미지 업로드할 때 필요함
   // LOG_IN
   logInLoading: false,
   logInDone: false,
@@ -77,6 +81,10 @@ export const initialState = {
   unfollowLoading: false,
   unfollowDone: false,
   unfollowError: null,
+  // REMOVE_FOLLOWER
+  removeFollowerLoading: false,
+  removeFollowerDone: false,
+  removeFollowerError: null,
 };
 
 export default (state = initialState, action) => {
@@ -115,6 +123,7 @@ export default (state = initialState, action) => {
         ...state,
         logOutLoading: false,
         logOutDone: true,
+        signUpDone: false,
         me: null,
       };
     case LOG_OUT_FAILURE:
@@ -254,6 +263,30 @@ export default (state = initialState, action) => {
         ...state,
         unfollowLoading: false,
         unfollowError: action.error,
+      };
+    // REMOVE_FOLLOWER
+    case REMOVE_FOLLOWER_REQUEST:
+      return {
+        ...state,
+        removeFollowerLoading: true,
+        removeFollowerDone: false,
+        removeFollowerError: null,
+      };
+    case REMOVE_FOLLOWER_SUCCESS:
+      return {
+        ...state,
+        removeFollowerLoading: false,
+        removeFollowerDone: true,
+        me: {
+          ...state.me,
+          Followers: state.me.Followers.filter((f) => f.id !== action.data.id),
+        },
+      };
+    case REMOVE_FOLLOWER_FAILURE:
+      return {
+        ...state,
+        removeFollowerLoading: false,
+        removeFollowerError: action.error,
       };
     // DEFAULT
     default:

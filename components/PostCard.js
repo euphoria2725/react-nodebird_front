@@ -110,7 +110,7 @@ const PostCard = ({ post }) => {
               <div style={{ marginBottom: 15 }}>
                 {<PostCardContent content={post.content} />}
               </div>
-              {/* {post.Images[0] && <PostImages images={post.Images} />} */}
+              {post.Images[0] && <PostImages images={post.Images} />}
             </>
           }
         />

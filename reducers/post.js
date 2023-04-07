@@ -27,7 +27,7 @@ export const LIKE_POST_FAILURE = "LIKE_POST_FAILURE";
 // define state
 export const initialState = {
   mainPosts: [],
-  postImagesPaths: [],
+  postImagesPaths: [], // 게시글에 사진 업로드할 때 필요함.
   // LOAD_POSTS
   loadPostsLoading: false,
   loadPostsDone: false,

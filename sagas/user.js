@@ -30,6 +30,10 @@ import {
   UNFOLLOW_REQUEST,
   UNFOLLOW_SUCCESS,
   UNFOLLOW_FAILURE,
+  // REMOVE_FOLLOWER
+  REMOVE_FOLLOWER_REQUEST,
+  REMOVE_FOLLOWER_SUCCESS,
+  REMOVE_FOLLOWER_FAILURE,
 } from "../reducers/user";
 
 // LOG_IN
@@ -159,7 +163,7 @@ function* follow(action) {
 
 // UNFOLLOW
 function unfollowAPI(data) {
-  return axios.delete(`/users/${data}/unfollow`);
+  return axios.delete(`/users/${data}/follow`);
 }
 
 function* unfollow(action) {
@@ -174,6 +178,27 @@ function* unfollow(action) {
     yield put({
       type: UNFOLLOW_FAILURE,
       error: err.response.data,
+    });
+  }
+}
+
+// REMOVE_FOLLOWER
+function removeFollowerAPI(data) {
+  return axios.delete(`users/followers/${data}`);
+}
+
+function* removeFollower(action) {
+  try {
+    const result = yield call(removeFollowerAPI, action.data);
+    yield put({
+      type: REMOVE_FOLLOWER_SUCCESS,
+      data: result.data,
+    });
+  } catch (error) {
+    console.error(error);
+    yield put({
+      type: REMOVE_FOLLOWER_FAILURE,
+      error: error.response.data,
     });
   }
 }
@@ -207,6 +232,10 @@ function* watchUnfollow() {
   yield takeLatest(UNFOLLOW_REQUEST, unfollow);
 }
 
+function* watchRemoveFollower() {
+  yield takeLatest(REMOVE_FOLLOWER_REQUEST, removeFollower);
+}
+
 export default function* userSaga() {
   yield all([
     fork(watchLogIn),
@@ -216,5 +245,6 @@ export default function* userSaga() {
     fork(watchUploadProfileImage),
     fork(watchFollow),
     fork(watchUnfollow),
+    fork(watchRemoveFollower),
   ]);
 }

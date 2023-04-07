@@ -87,7 +87,7 @@ const Signup = () => {
         email,
         password,
         nickname,
-        profileImageUrl: `http://localhost:3000/${profileImagePath.filename}`,
+        profile_image_url: `http://localhost:3000/${profileImagePath.filename}`,
       },
     });
   };
