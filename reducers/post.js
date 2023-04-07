@@ -144,13 +144,14 @@ export default (state = initialState, action) => {
         addCommentLoading: false,
         addCommentDone: true,
         mainPosts: state.mainPosts.map((post) => {
-          return post.id === action.data.PostId
+          return post.id === action.data.post_id
             ? {
                 ...post,
                 Comments: [
                   {
                     id: action.data.id,
                     content: action.data.content,
+                    created_at: action.data.created_at,
                     User: action.data.User,
                   },
                   ...post.Comments,

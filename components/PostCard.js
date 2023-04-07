@@ -74,7 +74,7 @@ const PostCard = ({ post }) => {
         actions={[
           <div key="message">
             <MessageOutlined onClick={onToggleComment} />
-            {/* <ButtonWrapper>{post.Comments.length}</ButtonWrapper> */}
+            <ButtonWrapper>{post.Comments.length}</ButtonWrapper>
           </div>,
           <RetweetOutlined key="retweet" />,
           <div key="heart">
@@ -137,6 +137,7 @@ const PostCard = ({ post }) => {
                   author={item.User.nickname}
                   avatar={<Avatar src={item.User.profile_image_url}></Avatar>}
                   content={item.content}
+                  datetime={item.created_at}
                 />
               </li>
             )}

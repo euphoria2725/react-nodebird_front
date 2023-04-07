@@ -14,7 +14,9 @@ const ButtonWrapper = styled.div`
 const CommentForm = ({ post }) => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-  const { addCommentDone } = useSelector((state) => state.post);
+  const { addCommentLoading, addCommentDone } = useSelector(
+    (state) => state.post
+  );
 
   const [commentText, setCommentText] = useState("");
 
@@ -47,7 +49,12 @@ const CommentForm = ({ post }) => {
           placeholder="Tweet your reply"
         />
         <ButtonWrapper>
-          <Button htmlType="submit" type="primary" shape="round">
+          <Button
+            htmlType="submit"
+            loading={addCommentLoading}
+            type="primary"
+            shape="round"
+          >
             Reply
           </Button>
         </ButtonWrapper>
