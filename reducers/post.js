@@ -1,6 +1,5 @@
 // define action type
 // LOAD_POSTS
-// LOAD_POSTS
 export const LOAD_POSTS_REQUEST = "LOAD_POSTS_REQUEST";
 export const LOAD_POSTS_SUCCESS = "LOAD_POSTS_SUCCESS";
 export const LOAD_POSTS_FAILURE = "LOAD_POSTS_FAILURE";
@@ -20,9 +19,14 @@ export const ADD_COMMENT_FAILURE = "ADD_COMMENT_FAILURE";
 export const UPLOAD_POST_IMAGES_REQUEST = "UPLOAD_POST_IMAGES_REQUEST";
 export const UPLOAD_POST_IMAGES_SUCCESS = "UPLOAD_POST_IMAGES_SUCCESS";
 export const UPLOAD_POST_IMAGES_FAILURE = "UPLOAD_POST_IMAGES_FAILURE";
+// LIKE_POST
 export const LIKE_POST_REQUEST = "LIKE_POST_REQUEST";
 export const LIKE_POST_SUCCESS = "LIKE_POST_SUCCESS";
 export const LIKE_POST_FAILURE = "LIKE_POST_FAILURE";
+// UNLIKE_POST
+export const UNLIKE_POST_REQUEST = "UNLIKE_POST_REQUEST";
+export const UNLIKE_POST_SUCCESS = "UNLIKE_POST_SUCCESS";
+export const UNLIKE_POST_FAILURE = "UNLIKE_POST_FAILURE";
 
 // define state
 export const initialState = {
@@ -52,6 +56,10 @@ export const initialState = {
   likePostLoading: false,
   likePostDone: false,
   likePostError: null,
+  // UNLIKE_POST
+  unlikePostLoading: false,
+  unlikePostDone: false,
+  unlikePostError: null,
 };
 
 export default (state = initialState, action) => {
@@ -198,6 +206,35 @@ export default (state = initialState, action) => {
         }),
       };
     case LIKE_POST_FAILURE:
+      return {
+        ...state,
+        likePostLoading: false,
+        likePostError: action.error,
+      };
+    // UNLIKE_POST
+    case UNLIKE_POST_REQUEST:
+      return {
+        ...state,
+        unlikePostLoading: true,
+        unlikePostDone: false,
+        unlikePostError: null,
+      };
+    case UNLIKE_POST_SUCCESS:
+      console.log(state.mainPosts.Likers);
+      return {
+        ...state,
+        unlikePostLoading: false,
+        unlikePostDone: true,
+        mainPosts: state.mainPosts.map((p) => {
+          return p.id === action.data.post_id
+            ? {
+                ...p,
+                Likers: p.Likers.filter((l) => l.id !== action.data.user_id),
+              }
+            : p;
+        }),
+      };
+    case UNLIKE_POST_FAILURE:
       return {
         ...state,
         likePostLoading: false,

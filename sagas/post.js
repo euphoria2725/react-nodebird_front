@@ -20,6 +20,9 @@ import {
   LIKE_POST_REQUEST,
   LIKE_POST_SUCCESS,
   LIKE_POST_FAILURE,
+  UNLIKE_POST_REQUEST,
+  UNLIKE_POST_SUCCESS,
+  UNLIKE_POST_FAILURE,
 } from "../reducers/post";
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from "../reducers/user";
 
@@ -157,6 +160,27 @@ function* likePost(action) {
   }
 }
 
+// UNLIKE_POST
+function unlikePostAPI(data) {
+  return axios.delete(`/posts/${data}/like`);
+}
+
+function* unlikePost(action) {
+  try {
+    const result = yield call(unlikePostAPI, action.data);
+    yield put({
+      type: UNLIKE_POST_SUCCESS,
+      data: result.data,
+    });
+  } catch (error) {
+    console.error(error);
+    yield put({
+      type: UNLIKE_POST_FAILURE,
+      error: error.response.data,
+    });
+  }
+}
+
 function* watchLoadPosts() {
   yield takeLatest(LOAD_POSTS_REQUEST, loadPosts);
 }
@@ -181,6 +205,10 @@ function* watchLikePost() {
   yield takeLatest(LIKE_POST_REQUEST, likePost);
 }
 
+function* watchUnlikePost() {
+  yield takeLatest(UNLIKE_POST_REQUEST, unlikePost);
+}
+
 export default function* postSaga() {
   yield all([
     fork(watchLoadPosts),
@@ -189,5 +217,6 @@ export default function* postSaga() {
     fork(watchAddComment),
     fork(watchUploadPostImages),
     fork(watchLikePost),
+    fork(watchUnlikePost),
   ]);
 }

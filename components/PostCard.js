@@ -16,7 +16,11 @@ import FollowButton from "./FollowButton";
 import CommentForm from "./CommentForm";
 import PostCardContent from "./PostCardContent";
 
-import { REMOVE_POST_REQUEST, LIKE_POST_REQUEST } from "../reducers/post";
+import {
+  REMOVE_POST_REQUEST,
+  LIKE_POST_REQUEST,
+  UNLIKE_POST_REQUEST,
+} from "../reducers/post";
 
 const CardWrapper = styled.div`
   margin-bottom: 20px;
@@ -50,7 +54,12 @@ const PostCard = ({ post }) => {
     });
   };
 
-  const onUnlike = () => {};
+  const onUnlike = () => {
+    dispatch({
+      type: UNLIKE_POST_REQUEST,
+      data: post.id,
+    });
+  };
 
   const onRemovePost = () => {
     dispatch({
@@ -115,25 +124,25 @@ const PostCard = ({ post }) => {
           }
         />
       </Card>
-      {/* {commentFormOpened && ( */}
-      {/*   <> */}
-      {/*     <CommentForm post={post} /> */}
-      {/*     <List */}
-      {/*       header={`${post.Comments.length}개의 댓글`} */}
-      {/*       itemLayout="horizontal" */}
-      {/*       dataSource={post.Comments} */}
-      {/*       renderItem={(item) => ( */}
-      {/*         <li> */}
-      {/*           <Comment */}
-      {/*             author={item.User.nickname} */}
-      {/*             avatar={<Avatar src={item.User.profileImageUrl}></Avatar>} */}
-      {/*             content={item.content} */}
-      {/*           /> */}
-      {/*         </li> */}
-      {/*       )} */}
-      {/*     /> */}
-      {/*   </> */}
-      {/* )} */}
+      {commentFormOpened && (
+        <>
+          <CommentForm post={post} />
+          <List
+            header={`${post.Comments.length}개의 댓글`}
+            itemLayout="horizontal"
+            dataSource={post.Comments}
+            renderItem={(item) => (
+              <li>
+                <Comment
+                  author={item.User.nickname}
+                  avatar={<Avatar src={item.User.profile_image_url}></Avatar>}
+                  content={item.content}
+                />
+              </li>
+            )}
+          />
+        </>
+      )}
     </CardWrapper>
   );
 };
