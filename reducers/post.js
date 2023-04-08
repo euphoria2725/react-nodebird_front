@@ -1,4 +1,6 @@
 // define action type
+// REMOVE_IMAGE
+export const REMOVE_IMAGE = "REMOVE_IMAGE";
 // LOAD_POSTS
 export const LOAD_POSTS_REQUEST = "LOAD_POSTS_REQUEST";
 export const LOAD_POSTS_SUCCESS = "LOAD_POSTS_SUCCESS";
@@ -64,6 +66,14 @@ export const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    // REMOVE_IMAGE
+    case REMOVE_IMAGE:
+      return {
+        ...state,
+        postImagesPaths: state.postImagesPaths.filter((v, i) => {
+          return i !== action.data;
+        }),
+      };
     // LOAD_POSTS
     case LOAD_POSTS_REQUEST:
       return {

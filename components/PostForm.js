@@ -2,7 +2,11 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import { Form, Input, Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 
-import { ADD_POST_REQUEST, UPLOAD_POST_IMAGES_REQUEST } from "../reducers/post";
+import {
+  ADD_POST_REQUEST,
+  UPLOAD_POST_IMAGES_REQUEST,
+  REMOVE_IMAGE,
+} from "../reducers/post";
 
 const PostForm = () => {
   const dispatch = useDispatch();
@@ -38,6 +42,13 @@ const PostForm = () => {
     dispatch({
       type: UPLOAD_POST_IMAGES_REQUEST,
       data: formData,
+    });
+  };
+
+  const onRemoveImage = (idx) => {
+    dispatch({
+      type: REMOVE_IMAGE,
+      data: idx,
     });
   };
 
@@ -90,7 +101,7 @@ const PostForm = () => {
         </Button>
       </div>
       {/*업로드한 이미지 미리 보기*/}
-      {postImagesPaths.map((v, i) => {
+      {postImagesPaths.map((v, idx) => {
         return (
           <div key={v} style={{ display: "inline-block" }}>
             <img
@@ -99,7 +110,13 @@ const PostForm = () => {
               style={{ width: "200px" }}
             />
             <div>
-              <Button>제거</Button>
+              <Button
+                onClick={() => {
+                  onRemoveImage(idx);
+                }}
+              >
+                제거
+              </Button>
             </div>
           </div>
         );
