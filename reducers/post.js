@@ -34,6 +34,7 @@ export const UNLIKE_POST_FAILURE = "UNLIKE_POST_FAILURE";
 export const initialState = {
   mainPosts: [],
   postImagesPaths: [], // 게시글에 사진 업로드할 때 필요함.
+  hasMorePosts: true,
   // LOAD_POSTS
   loadPostsLoading: false,
   loadPostsDone: false,
@@ -87,7 +88,8 @@ export default (state = initialState, action) => {
         ...state,
         loadPostsLoading: false,
         loadPostsDone: true,
-        mainPosts: [...action.data, ...state.mainPosts],
+        mainPosts: [...state.mainPosts, ...action.data],
+        hasMorePosts: action.data.length === 5,
       };
     case LOAD_POSTS_FAILURE:
       return {
