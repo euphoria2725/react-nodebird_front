@@ -30,8 +30,10 @@ const Home = () => {
     // 사용자 정보 요청
     dispatch({ type: LOAD_USER_REQUEST });
 
-    // 게시글 불러오기
-    dispatch({ type: LOAD_POSTS_REQUEST });
+    // 게시글 불러오기(불러온 게시글들이 있다면, 요청하지 않기)
+    if (mainPosts.length === 0) {
+      dispatch({ type: LOAD_POSTS_REQUEST });
+    }
   }, []);
 
   useEffect(() => {
