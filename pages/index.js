@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { END } from "redux-saga";
 import { useInView } from "react-intersection-observer";
 import axios from "axios";
+import Head from "next/head";
 import styled from "styled-components";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -81,22 +82,27 @@ const Home = () => {
   // }, [inView, hasMorePosts, loadPostsLoading, mainPosts]);
 
   return (
-    <AppLayout>
-      {me && <PostForm />}
-      {mainPosts.map((post) => (
-        <PostCard key={post.id} post={post} />
-      ))}
-      <div
-        ref={hasMorePosts && !loadPostsLoading ? ref : undefined}
-        style={{ height: 10 }}
-      />
-      {/* 로딩 중일 때, 로딩 이모션 효과 불러오기 */}
-      {loadPostsLoading ? (
-        <LoadingWrapper>
-          <Spin indicator={antIcon} />
-        </LoadingWrapper>
-      ) : null}
-    </AppLayout>
+    <>
+      <Head>
+        <title>Home / Twitter</title>
+      </Head>
+      <AppLayout>
+        {me && <PostForm />}
+        {mainPosts.map((post) => (
+          <PostCard key={post.id} post={post} />
+        ))}
+        <div
+          ref={hasMorePosts && !loadPostsLoading ? ref : undefined}
+          style={{ height: 10 }}
+        />
+        {/* 로딩 중일 때, 로딩 이모션 효과 불러오기 */}
+        {loadPostsLoading ? (
+          <LoadingWrapper>
+            <Spin indicator={antIcon} />
+          </LoadingWrapper>
+        ) : null}
+      </AppLayout>
+    </>
   );
 };
 

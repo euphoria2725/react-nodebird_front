@@ -28,7 +28,7 @@ const Profile = () => {
   return (
     <>
       <Head>
-        <title>내 프로필 | NodeBird</title>
+        <title>{me ? me.nickname : "Profile"} / Twitter</title>
       </Head>
       <AppLayout>
         <NicknameEditForm />

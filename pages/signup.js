@@ -101,7 +101,7 @@ const Signup = () => {
   return (
     <>
       <Head>
-        <title>회원가입 | Twitter</title>
+        <title>Sign Up / Twitter</title>
       </Head>
       {/*회원가입*/}
       <AppLayout>
