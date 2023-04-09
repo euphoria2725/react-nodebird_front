@@ -2,11 +2,17 @@ import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Head from "next/head";
 import Router from "next/router";
+import axios from "axios";
+import { END } from "redux-saga";
 import { Form, Input, Checkbox, Button } from "antd";
+
+import wrapper from "../store/configureStore";
 
 import AppLayout from "../components/AppLayout";
 import useInput from "../hooks/useInput";
+
 import {
+  LOAD_MY_INFO_REQUEST,
   SIGN_UP_REQUEST,
   UPLOAD_PROFILE_IMAGE_REQUEST,
 } from "../reducers/user";
@@ -32,7 +38,7 @@ const Signup = () => {
   useEffect(() => {
     if (me) {
       alert("로그인했으니 메인페이지로 이동합니다.");
-      Router.replace("/");
+      Router.push("/");
     }
   }, [me && me.id]);
 
@@ -187,5 +193,22 @@ const Signup = () => {
     </>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req, res }) => {
+      // 이런 식으로 작성해야지 로그인 공유 문제를 막을 수 있다.
+      const cookie = req ? req.headers.cookie : "";
+      axios.defaults.headers.Cookie = "";
+      if (req && cookie) {
+        axios.defaults.headers.Cookie = cookie;
+      }
+      store.dispatch({
+        type: LOAD_MY_INFO_REQUEST,
+      });
+      store.dispatch(END);
+      await store.sagaTask.toPromise();
+    }
+);
 
 export default Signup;
