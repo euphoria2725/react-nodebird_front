@@ -1,6 +1,5 @@
 // define action type
 // LOG_IN
-// LOG_IN
 export const LOG_IN_REQUEST = "LOG_IN_REQUEST";
 export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
 export const LOG_IN_FAILURE = "LOG_IN_FAILURE";
@@ -15,10 +14,10 @@ export const SIGN_UP_FAILURE = "SIGN_UP_FAILURE";
 // ADD_POST_TO_ME
 export const ADD_POST_TO_ME = "ADD_POST_TO_ME";
 export const REMOVE_POST_OF_ME = "REMOVE_POST_OF_ME";
-// LOAD_USER
-export const LOAD_USER_REQUEST = "LOAD_USER_REQUEST";
-export const LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS";
-export const LOAD_USER_FAILURE = "LOAD_USER_FAILURE";
+// LOAD_MY_INFO
+export const LOAD_MY_INFO_REQUEST = "LOAD_MY_INFO_REQUEST";
+export const LOAD_MY_INFO_SUCCESS = "LOAD_MY_INFO_SUCCESS";
+export const LOAD_MY_INFO_FAILURE = "LOAD_MY_INFO_FAILURE";
 // UPLOAD_PROFILE_IMAGE
 export const UPLOAD_PROFILE_IMAGE_REQUEST = "UPLOAD_PROFILE_IMAGE_REQUEST";
 export const UPLOAD_PROFILE_IMAGE_SUCCESS = "UPLOAD_PROFILE_IMAGE_SUCCESS";
@@ -69,10 +68,10 @@ export const initialState = {
   signUpLoading: false,
   signUpDone: false,
   signUpError: null,
-  // LOAD_USER
-  loadUserLoading: false,
-  loadUserDone: false,
-  loadUserError: null,
+  // LOAD_MY_INFO
+  loadMyInfoLoading: false,
+  loadMyInfoDone: false,
+  loadMyInfoError: null,
   // UPLOAD_PROFILE_IMAGE
   uploadProfileImageLoading: false,
   uploadProfileImageDone: false,
@@ -180,26 +179,26 @@ export default (state = initialState, action) => {
           }),
         },
       };
-    // LOAD_USER
-    case LOAD_USER_REQUEST:
+    // LOAD_MY_INFO
+    case LOAD_MY_INFO_REQUEST:
       return {
         ...state,
-        loadUserLoading: true,
-        loadUserDone: false,
-        loadUserError: null,
+        loadMyInfoLoading: true,
+        loadMyInfoDone: false,
+        loadMyInfoError: null,
       };
-    case LOAD_USER_SUCCESS:
+    case LOAD_MY_INFO_SUCCESS:
       return {
         ...state,
-        loadUserLoading: false,
-        loadUserDone: true,
+        loadMyInfoLoading: false,
+        loadMyInfoDone: true,
         me: action.data,
       };
-    case LOAD_USER_FAILURE:
+    case LOAD_MY_INFO_FAILURE:
       return {
         ...state,
-        loadUserLoading: false,
-        loadUserError: action.error,
+        loadMyInfoLoading: false,
+        loadMyInfoError: action.error,
       };
     // UPLOAD_PROFILE_IMAGE
     case UPLOAD_PROFILE_IMAGE_REQUEST:

@@ -14,10 +14,10 @@ import {
   SIGN_UP_REQUEST,
   SIGN_UP_SUCCESS,
   SIGN_UP_FAILURE,
-  // LOAD_USER
-  LOAD_USER_REQUEST,
-  LOAD_USER_SUCCESS,
-  LOAD_USER_FAILURE,
+  // LOAD_MY_INFO
+  LOAD_MY_INFO_REQUEST,
+  LOAD_MY_INFO_SUCCESS,
+  LOAD_MY_INFO_FAILURE,
   // UPLOAD_PROFILE_IMAGE
   UPLOAD_PROFILE_IMAGE_REQUEST,
   UPLOAD_PROFILE_IMAGE_SUCCESS,
@@ -111,13 +111,13 @@ function* loadUser() {
   try {
     const result = yield call(loadUserAPI);
     yield put({
-      type: LOAD_USER_SUCCESS,
+      type: LOAD_MY_INFO_SUCCESS,
       data: result.data,
     });
   } catch (error) {
     console.error(error);
     yield put({
-      type: LOAD_USER_FAILURE,
+      type: LOAD_MY_INFO_FAILURE,
       error: error.response.data,
     });
   }
@@ -242,7 +242,7 @@ function* watchSignUp() {
 }
 
 function* watchLoadUser() {
-  yield takeLatest(LOAD_USER_REQUEST, loadUser);
+  yield takeLatest(LOAD_MY_INFO_REQUEST, loadUser);
 }
 
 function* watchUploadProfileImage() {
