@@ -38,6 +38,10 @@ import {
   CHANGE_NICKNAME_REQUEST,
   CHANGE_NICKNAME_SUCCESS,
   CHANGE_NICKNAME_FAILURE,
+  // LOAD_USER
+  LOAD_USER_REQUEST,
+  LOAD_USER_SUCCESS,
+  LOAD_USER_FAILURE,
 } from "../reducers/user";
 
 // LOG_IN
@@ -102,14 +106,14 @@ function* signUp(action) {
   }
 }
 
-// LOAD_USER
-function loadUserAPI() {
+// LOAD_MY_INFO
+function loadMyInfoAPI() {
   return axios.get("/users");
 }
 
-function* loadUser() {
+function* loadMyInfo() {
   try {
-    const result = yield call(loadUserAPI);
+    const result = yield call(loadMyInfoAPI);
     yield put({
       type: LOAD_MY_INFO_SUCCESS,
       data: result.data,
@@ -228,6 +232,27 @@ function* changeNickname(action) {
   }
 }
 
+// LOAD_USER
+function loadUserAPI(data) {
+  return axios.get(`/users/${data.userId}`);
+}
+
+function* loadUser(action) {
+  try {
+    const result = yield call(loadUserAPI, action.data);
+    yield put({
+      type: LOAD_USER_SUCCESS,
+      data: result.data,
+    });
+  } catch (error) {
+    console.error(error);
+    yield put({
+      type: LOAD_USER_FAILURE,
+      error: error.response.data,
+    });
+  }
+}
+
 // watch request
 function* watchLogIn() {
   yield takeLatest(LOG_IN_REQUEST, logIn);
@@ -241,8 +266,8 @@ function* watchSignUp() {
   yield takeLatest(SIGN_UP_REQUEST, signUp);
 }
 
-function* watchLoadUser() {
-  yield takeLatest(LOAD_MY_INFO_REQUEST, loadUser);
+function* watchLoadMyInfo() {
+  yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfo);
 }
 
 function* watchUploadProfileImage() {
@@ -265,16 +290,21 @@ function* watchChangeNickname() {
   yield takeLatest(CHANGE_NICKNAME_REQUEST, changeNickname);
 }
 
+function* watchLoadUser() {
+  yield takeLatest(LOAD_USER_REQUEST, loadUser);
+}
+
 export default function* userSaga() {
   yield all([
     fork(watchLogIn),
     fork(watchLogOut),
     fork(watchSignUp),
-    fork(watchLoadUser),
+    fork(watchLoadMyInfo),
     fork(watchUploadProfileImage),
     fork(watchFollow),
     fork(watchUnfollow),
     fork(watchRemoveFollower),
     fork(watchChangeNickname),
+    fork(watchLoadUser),
   ]);
 }

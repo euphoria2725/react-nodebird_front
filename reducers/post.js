@@ -29,6 +29,14 @@ export const LIKE_POST_FAILURE = "LIKE_POST_FAILURE";
 export const UNLIKE_POST_REQUEST = "UNLIKE_POST_REQUEST";
 export const UNLIKE_POST_SUCCESS = "UNLIKE_POST_SUCCESS";
 export const UNLIKE_POST_FAILURE = "UNLIKE_POST_FAILURE";
+// RETWEET
+export const RETWEET_REQUEST = "RETWEET_REQUEST";
+export const RETWEET_SUCCESS = "RETWEET_SUCCESS";
+export const RETWEET_FAILURE = "RETWEET_FAILURE";
+// LOAD_USER_POSTS
+export const LOAD_USER_POSTS_REQUEST = "LOAD_USER_POSTS_REQUEST";
+export const LOAD_USER_POSTS_SUCCESS = "LOAD_USER_POSTS_SUCCESS";
+export const LOAD_USER_POSTS_FAILURE = "LOAD_USER_POSTS_FAILURE";
 
 // define state
 export const initialState = {
@@ -63,6 +71,14 @@ export const initialState = {
   unlikePostLoading: false,
   unlikePostDone: false,
   unlikePostError: null,
+  // RETWEET
+  retweetLoading: false,
+  retweetDone: false,
+  retweetError: null,
+  // LOAD_USER_POSTS
+  loadUserPostsLoading: false,
+  loadUserPostsDone: false,
+  loadUserPostsError: null,
 };
 
 export default (state = initialState, action) => {
@@ -214,7 +230,10 @@ export default (state = initialState, action) => {
         likePostDone: true,
         mainPosts: state.mainPosts.map((p) => {
           return p.id === action.data.post_id
-            ? { ...p, Likers: [...p.Likers, { id: action.data.user_id }] }
+            ? {
+                ...p,
+                Likers: [...p.Likers, { id: action.data.user_id }],
+              }
             : p;
         }),
       };
@@ -252,6 +271,48 @@ export default (state = initialState, action) => {
         ...state,
         likePostLoading: false,
         likePostError: action.error,
+      };
+    // RETWEET
+    case RETWEET_REQUEST:
+      return {
+        ...state,
+        retweetLoading: true,
+        retweetDone: false,
+        retweetError: null,
+      };
+    case RETWEET_SUCCESS:
+      return {
+        ...state,
+        retweetLoading: false,
+        retweetDone: true,
+        mainPosts: [action.data, ...state.mainPosts],
+      };
+    case RETWEET_FAILURE:
+      return {
+        ...state,
+        retweetLoading: false,
+        retweetError: action.error,
+      };
+    // LOAD_USER_POSTS
+    case LOAD_USER_POSTS_REQUEST:
+      return {
+        ...state,
+        loadUserPostsLoading: true,
+        loadUserPostsDone: false,
+        loadUserPostsError: null,
+      };
+    case LOAD_USER_POSTS_SUCCESS:
+      return {
+        ...state,
+        loadUserPostsLoading: false,
+        loadUserPostsDone: true,
+        mainPosts: action.data,
+      };
+    case LOAD_USER_POSTS_FAILURE:
+      return {
+        ...state,
+        loadUserPostsLoading: false,
+        loadUserPostsError: action.error,
       };
     // DEFAULT
     default: {

@@ -20,6 +20,7 @@ import {
   REMOVE_POST_REQUEST,
   LIKE_POST_REQUEST,
   UNLIKE_POST_REQUEST,
+  RETWEET_REQUEST,
 } from "../reducers/post";
 
 const CardWrapper = styled.div`
@@ -68,6 +69,13 @@ const PostCard = ({ post }) => {
     });
   };
 
+  const onRetweet = () => {
+    dispatch({
+      type: RETWEET_REQUEST,
+      data: post.id,
+    });
+  };
+
   return (
     <CardWrapper key={post.id}>
       <Card
@@ -76,7 +84,7 @@ const PostCard = ({ post }) => {
             <MessageOutlined onClick={onToggleComment} />
             <ButtonWrapper>{post.Comments.length}</ButtonWrapper>
           </div>,
-          <RetweetOutlined key="retweet" />,
+          <RetweetOutlined key="retweet" onClick={onRetweet} />,
           <div key="heart">
             {liked ? (
               <HeartTwoTone twoToneColor="#eb2f96" onClick={onUnlike} />
@@ -109,6 +117,16 @@ const PostCard = ({ post }) => {
             <EllipsisOutlined />
           </Popover>,
         ]}
+        title={
+          post.retweet_user_nickname ? (
+            <>
+              <RetweetOutlined />
+              <span style={{ display: "inline-block", marginLeft: "10px" }}>
+                {post.retweet_user_nickname} Retweeted
+              </span>
+            </>
+          ) : null
+        }
         extra={id && <FollowButton post={post} />}
       >
         <Card.Meta

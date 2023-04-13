@@ -38,6 +38,10 @@ export const REMOVE_FOLLOWER_FAILURE = "REMOVE_FOLLOWER_FAILURE";
 export const CHANGE_NICKNAME_REQUEST = "CHANGE_NICKNAME_REQUEST";
 export const CHANGE_NICKNAME_SUCCESS = "CHANGE_NICKNAME_SUCCESS";
 export const CHANGE_NICKNAME_FAILURE = "CHANGE_NICKNAME_FAILURE";
+// LOAD_USER
+export const LOAD_USER_REQUEST = "LOAD_USER_REQUEST";
+export const LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS";
+export const LOAD_USER_FAILURE = "LOAD_USER_FAILURE";
 
 export const loginRequestAction = (data) => {
   return {
@@ -56,6 +60,7 @@ export const logoutRequestAction = () => {
 export const initialState = {
   me: null,
   profileImagePath: null, // 사용자가 회원가입 시 프로필 이미지 업로드할 때 필요함
+  userInfo: null, // 특정 사용자의 정보
   // LOG_IN
   logInLoading: false,
   logInDone: false,
@@ -92,6 +97,10 @@ export const initialState = {
   changeNicknameLoading: false,
   changeNicknameDone: false,
   changeNicknameError: null,
+  // LOAD_USER
+  loadUserLoading: false,
+  loadUserDone: false,
+  loadUserError: null,
 };
 
 export default (state = initialState, action) => {
@@ -318,6 +327,27 @@ export default (state = initialState, action) => {
         ...state,
         changeNicknameLoading: false,
         changeNicknameError: action.error,
+      };
+    // LOAD_USER
+    case LOAD_USER_REQUEST:
+      return {
+        ...state,
+        loadUserLoading: true,
+        loadUserDone: false,
+        loadUserError: null,
+      };
+    case LOAD_USER_SUCCESS:
+      return {
+        ...state,
+        loadUserLoading: false,
+        loadUserDone: true,
+        userInfo: action.data,
+      };
+    case LOAD_USER_FAILURE:
+      return {
+        ...state,
+        loadUserLoading: false,
+        loadUserError: action.error,
       };
     // DEFAULT
     default:
