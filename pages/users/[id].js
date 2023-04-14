@@ -29,6 +29,7 @@ const Users = () => {
   const { mainPosts } = useSelector((state) => state.post);
 
   if (!userInfo) {
+    // 분명 SSR이면 userInfo가 분명히 있을텐데 왜 에러가 떴을까잉?
     return null;
   }
   return (

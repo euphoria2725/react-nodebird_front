@@ -41,10 +41,15 @@ export const LOAD_USER_POSTS_FAILURE = "LOAD_USER_POSTS_FAILURE";
 export const LOAD_HASHTAG_POSTS_REQUEST = "LOAD_HASHTAG_POSTS_REQUEST";
 export const LOAD_HASHTAG_POSTS_SUCCESS = "LOAD_HASHTAG_POSTS_SUCCESS";
 export const LOAD_HASHTAG_POSTS_FAILURE = "LOAD_HASHTAG_POSTS_FAILURE";
+// LOAD_POST
+export const LOAD_POST_REQUEST = "LOAD_POST_REQUEST";
+export const LOAD_POST_SUCCESS = "LOAD_POST_SUCCESS";
+export const LOAD_POST_FAILURE = "LOAD_POST_FAILURE";
 
 // define state
 export const initialState = {
   mainPosts: [],
+  singlePost: null, // 특정 게시글
   postImagesPaths: [], // 게시글에 사진 업로드할 때 필요함.
   hasMorePosts: true,
   // LOAD_POSTS
@@ -87,6 +92,10 @@ export const initialState = {
   loadHashtagPostsLoading: false,
   loadHashtagPostsDone: false,
   loadHashtagPostsError: null,
+  // LOAD_POST
+  loadPostLoading: false,
+  loadPostDone: false,
+  loadPostError: null,
 };
 
 export default (state = initialState, action) => {
@@ -179,22 +188,18 @@ export default (state = initialState, action) => {
         ...state,
         addCommentLoading: false,
         addCommentDone: true,
-        mainPosts: state.mainPosts.map((post) => {
-          return post.id === action.data.post_id
-            ? {
-                ...post,
-                Comments: [
-                  {
-                    id: action.data.id,
-                    content: action.data.content,
-                    created_at: action.data.created_at,
-                    User: action.data.User,
-                  },
-                  ...post.Comments,
-                ],
-              }
-            : post;
-        }),
+        singlePost: {
+          ...state.singlePost,
+          Comments: [
+            {
+              id: action.data.id,
+              content: action.data.content,
+              created_at: action.data.created_at,
+              User: action.data.User,
+            },
+            ...state.singlePost.Comments,
+          ],
+        },
       };
     case ADD_COMMENT_FAILURE:
       return {
@@ -232,19 +237,31 @@ export default (state = initialState, action) => {
         likePostError: null,
       };
     case LIKE_POST_SUCCESS:
-      return {
-        ...state,
-        likePostLoading: false,
-        likePostDone: true,
-        mainPosts: state.mainPosts.map((p) => {
-          return p.id === action.data.post_id
-            ? {
-                ...p,
-                Likers: [...p.Likers, { id: action.data.user_id }],
-              }
-            : p;
-        }),
-      };
+      if (!state.singlePost) {
+        return {
+          ...state,
+          likePostLoading: false,
+          likePostDone: true,
+          mainPosts: state.mainPosts.map((p) => {
+            return p.id === action.data.post_id
+              ? {
+                  ...p,
+                  Likers: [...p.Likers, { id: action.data.user_id }],
+                }
+              : p;
+          }),
+        };
+      } else {
+        return {
+          ...state,
+          likePostLoading: false,
+          likePostDone: true,
+          singlePost: {
+            ...state.singlePost,
+            Likers: [...state.singlePost.Likers, { id: action.data.user_id }],
+          },
+        };
+      }
     case LIKE_POST_FAILURE:
       return {
         ...state,
@@ -260,20 +277,33 @@ export default (state = initialState, action) => {
         unlikePostError: null,
       };
     case UNLIKE_POST_SUCCESS:
-      console.log(state.mainPosts.Likers);
-      return {
-        ...state,
-        unlikePostLoading: false,
-        unlikePostDone: true,
-        mainPosts: state.mainPosts.map((p) => {
-          return p.id === action.data.post_id
-            ? {
-                ...p,
-                Likers: p.Likers.filter((l) => l.id !== action.data.user_id),
-              }
-            : p;
-        }),
-      };
+      if (!state.singlePost) {
+        return {
+          ...state,
+          unlikePostLoading: false,
+          unlikePostDone: true,
+          mainPosts: state.mainPosts.map((p) => {
+            return p.id === action.data.post_id
+              ? {
+                  ...p,
+                  Likers: p.Likers.filter((l) => l.id !== action.data.user_id),
+                }
+              : p;
+          }),
+        };
+      } else {
+        return {
+          ...state,
+          unlikePostLoading: false,
+          unlikePostDone: true,
+          singlePost: {
+            ...state.singlePost,
+            Likers: state.singlePost.Likers.filter(
+              (l) => l.id !== action.data.user_id
+            ),
+          },
+        };
+      }
     case UNLIKE_POST_FAILURE:
       return {
         ...state,
@@ -342,6 +372,27 @@ export default (state = initialState, action) => {
         ...state,
         loadHashtagPostsLoading: false,
         loadHashtagPostsError: action.error,
+      };
+    // LOAD_POST
+    case LOAD_POST_REQUEST:
+      return {
+        ...state,
+        loadPostLoading: true,
+        loadPostDone: false,
+        loadPostError: null,
+      };
+    case LOAD_POST_SUCCESS:
+      return {
+        ...state,
+        loadPostLoading: false,
+        loadPostDone: true,
+        singlePost: action.data,
+      };
+    case LOAD_POST_FAILURE:
+      return {
+        ...state,
+        loadPostLoading: false,
+        loadPostError: action.error,
       };
     // DEFAULT
     default: {

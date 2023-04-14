@@ -32,6 +32,9 @@ import {
   LOAD_HASHTAG_POSTS_REQUEST,
   LOAD_HASHTAG_POSTS_SUCCESS,
   LOAD_HASHTAG_POSTS_FAILURE,
+  LOAD_POST_REQUEST,
+  LOAD_POST_SUCCESS,
+  LOAD_POST_FAILURE,
 } from "../reducers/post";
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from "../reducers/user";
 
@@ -262,6 +265,27 @@ function* loadHashtagPosts(action) {
   }
 }
 
+// LOAD_POST
+function loadPostAPI(data) {
+  return axios.get(`/posts/${data.postId}`);
+}
+
+function* loadPost(action) {
+  try {
+    const result = yield call(loadPostAPI, action.data);
+    yield put({
+      type: LOAD_POST_SUCCESS,
+      data: result.data,
+    });
+  } catch (error) {
+    console.error(error);
+    yield put({
+      type: LOAD_POST_FAILURE,
+      error: error.response.data,
+    });
+  }
+}
+
 function* watchLoadPosts() {
   yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
 }
@@ -302,6 +326,10 @@ function* watchLoadHashtagPosts() {
   yield takeLatest(LOAD_HASHTAG_POSTS_REQUEST, loadHashtagPosts);
 }
 
+function* watchLoadPost() {
+  yield takeLatest(LOAD_POST_REQUEST, loadPost);
+}
+
 export default function* postSaga() {
   yield all([
     fork(watchLoadPosts),
@@ -314,5 +342,6 @@ export default function* postSaga() {
     fork(watchRetweet),
     fork(watchLoadUserPosts),
     fork(watchLoadHashtagPosts),
+    fork(watchLoadPost),
   ]);
 }

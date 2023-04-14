@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Link from "next/link";
+import Router from "next/router";
 import { Card, Popover, Avatar, Button, List, Comment } from "antd";
 import {
   RetweetOutlined,
@@ -14,7 +15,6 @@ import {
 
 import PostImages from "./PostImages";
 import FollowButton from "./FollowButton";
-import CommentForm from "./CommentForm";
 import PostCardContent from "./PostCardContent";
 
 import {
@@ -40,10 +40,8 @@ const PostCard = ({ post }) => {
 
   const liked = post.Likers.find((l) => l.id === id);
 
-  const [commentFormOpened, setCommentFormOpened] = useState(false);
-
-  const onToggleComment = () => {
-    setCommentFormOpened((prev) => !prev);
+  const onComment = () => {
+    Router.push(`/posts/${post.id}`);
   };
 
   const onLike = () => {
@@ -82,7 +80,7 @@ const PostCard = ({ post }) => {
       <Card
         actions={[
           <div key="message">
-            <MessageOutlined onClick={onToggleComment} />
+            <MessageOutlined onClick={onComment} />
             <ButtonWrapper>{post.Comments.length}</ButtonWrapper>
           </div>,
           <RetweetOutlined key="retweet" onClick={onRetweet} />,
@@ -153,26 +151,6 @@ const PostCard = ({ post }) => {
           }
         />
       </Card>
-      {commentFormOpened && (
-        <>
-          <CommentForm post={post} />
-          <List
-            header={`${post.Comments.length}개의 댓글`}
-            itemLayout="horizontal"
-            dataSource={post.Comments}
-            renderItem={(item) => (
-              <li>
-                <Comment
-                  author={item.User.nickname}
-                  avatar={<Avatar src={item.User.profile_image_url}></Avatar>}
-                  content={item.content}
-                  datetime={item.created_at}
-                />
-              </li>
-            )}
-          />
-        </>
-      )}
     </CardWrapper>
   );
 };

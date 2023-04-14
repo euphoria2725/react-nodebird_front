@@ -13,7 +13,6 @@ const ButtonWrapper = styled.div`
 
 const CommentForm = ({ post }) => {
   const dispatch = useDispatch();
-  const { me } = useSelector((state) => state.user);
   const { addCommentLoading, addCommentDone } = useSelector(
     (state) => state.post
   );

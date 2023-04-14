@@ -79,6 +79,7 @@ const AppLayout = ({ children }) => {
                 value={searchInput}
                 onChange={onSearchInput}
                 onSearch={onSearch}
+                placeholder="Search Hashtag"
                 enterButton
                 style={{
                   verticalAlign: "middle",
