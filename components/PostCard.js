@@ -135,11 +135,41 @@ const PostCard = ({ post }) => {
             </Link>
           }
           title={
-            <Link href={`/users/${post.User.id}`}>
-              <span style={{ color: "black", fontSize: "15px" }}>
-                {post.User.nickname}
+            <>
+              <Link href={`/users/${post.User.id}`}>
+                <span
+                  style={{
+                    color: "black",
+                    fontSize: "15px",
+                    fontWeight: "600",
+                  }}
+                >
+                  {post.User.nickname}
+                </span>
+              </Link>
+              <span
+                style={{
+                  display: "inline-block",
+                  color: "#798690",
+                  fontSize: "15px",
+                  fontWeight: "400",
+                  marginLeft: "5px",
+                  marginRight: "5px",
+                }}
+              >
+                ·
               </span>
-            </Link>
+              <span
+                style={{
+                  display: "inline-block",
+                  color: "#798690",
+                  fontSize: "15px",
+                  fontWeight: "400",
+                }}
+              >
+                {post.created_at}
+              </span>
+            </>
           }
           description={
             <>

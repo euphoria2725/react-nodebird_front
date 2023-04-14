@@ -4,7 +4,7 @@ import axios from "axios";
 import { END } from "redux-saga";
 import { useDispatch, useSelector } from "react-redux";
 import Head from "next/head";
-
+import moment from "moment";
 import { Avatar, Comment, List } from "antd";
 
 import wrapper from "../../store/configureStore";
