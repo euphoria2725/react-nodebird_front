@@ -103,8 +103,8 @@ const Signup = () => {
       <Head>
         <title>Sign Up / Twitter</title>
       </Head>
-      {/*회원가입*/}
       <AppLayout>
+        {/* 회원가입 Form */}
         <Form
           encType="multipart/form-data"
           onFinish={onSubmit}

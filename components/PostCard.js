@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import Link from "next/link";
 import { Card, Popover, Avatar, Button, List, Comment } from "antd";
 import {
   RetweetOutlined,
@@ -130,8 +131,18 @@ const PostCard = ({ post }) => {
         extra={id && <FollowButton post={post} />}
       >
         <Card.Meta
-          avatar={<Avatar src={post.User.profile_image_url}></Avatar>}
-          title={post.User.nickname}
+          avatar={
+            <Link href={`/users/${post.User.id}`}>
+              <Avatar src={post.User.profile_image_url}></Avatar>
+            </Link>
+          }
+          title={
+            <Link href={`/users/${post.User.id}`}>
+              <span style={{ color: "black", fontSize: "15px" }}>
+                {post.User.nickname}
+              </span>
+            </Link>
+          }
           description={
             <>
               <div style={{ marginBottom: 15 }}>

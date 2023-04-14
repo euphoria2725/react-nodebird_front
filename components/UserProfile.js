@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import Link from "next/link";
 import { Card, Avatar, Button } from "antd";
 import styled from "styled-components";
 
@@ -36,8 +37,16 @@ const UserProfile = () => {
       ]}
     >
       <Card.Meta
-        avatar={<Avatar src={me.profile_image_url}></Avatar>}
-        title={me.nickname}
+        avatar={
+          <Link href="/profile">
+            <Avatar src={me.profile_image_url}></Avatar>
+          </Link>
+        }
+        title={
+          <Link href="/profile">
+            <span style={{ color: "black" }}>{me.nickname}</span>
+          </Link>
+        }
         description={
           <Button
             danger

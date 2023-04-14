@@ -28,6 +28,9 @@ const Users = () => {
   const { userInfo } = useSelector((state) => state.user);
   const { mainPosts } = useSelector((state) => state.post);
 
+  if (!userInfo) {
+    return null;
+  }
   return (
     <>
       <Head>
