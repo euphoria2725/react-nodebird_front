@@ -37,6 +37,10 @@ export const RETWEET_FAILURE = "RETWEET_FAILURE";
 export const LOAD_USER_POSTS_REQUEST = "LOAD_USER_POSTS_REQUEST";
 export const LOAD_USER_POSTS_SUCCESS = "LOAD_USER_POSTS_SUCCESS";
 export const LOAD_USER_POSTS_FAILURE = "LOAD_USER_POSTS_FAILURE";
+// LOAD_HASHTAG_POSTS
+export const LOAD_HASHTAG_POSTS_REQUEST = "LOAD_HASHTAG_POSTS_REQUEST";
+export const LOAD_HASHTAG_POSTS_SUCCESS = "LOAD_HASHTAG_POSTS_SUCCESS";
+export const LOAD_HASHTAG_POSTS_FAILURE = "LOAD_HASHTAG_POSTS_FAILURE";
 
 // define state
 export const initialState = {
@@ -79,6 +83,10 @@ export const initialState = {
   loadUserPostsLoading: false,
   loadUserPostsDone: false,
   loadUserPostsError: null,
+  // LOAD_HASHTAG_POSTS
+  loadHashtagPostsLoading: false,
+  loadHashtagPostsDone: false,
+  loadHashtagPostsError: null,
 };
 
 export default (state = initialState, action) => {
@@ -313,6 +321,27 @@ export default (state = initialState, action) => {
         ...state,
         loadUserPostsLoading: false,
         loadUserPostsError: action.error,
+      };
+    // LOAD_HASHTAG_POSTS
+    case LOAD_HASHTAG_POSTS_REQUEST:
+      return {
+        ...state,
+        loadHashtagPostsLoading: true,
+        loadHashtagPostsDone: false,
+        loadHashtagPostsError: null,
+      };
+    case LOAD_HASHTAG_POSTS_SUCCESS:
+      return {
+        ...state,
+        loadHashtagPostsLoading: false,
+        loadHashtagPostsDone: true,
+        mainPosts: action.data,
+      };
+    case LOAD_HASHTAG_POSTS_FAILURE:
+      return {
+        ...state,
+        loadHashtagPostsLoading: false,
+        loadHashtagPostsError: action.error,
       };
     // DEFAULT
     default: {

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Link from "next/link";
+import Router from "next/router";
 import { useSelector } from "react-redux";
 import { Menu, Row, Col, Input } from "antd";
 import {
@@ -13,28 +14,6 @@ import styled from "styled-components";
 
 import LoginForm from "./LoginForm";
 import UserProfile from "./UserProfile";
-
-const topMenuItems = [
-  {
-    label: <Link href="/">Twitter</Link>,
-    key: "link-to-home",
-  },
-  {
-    label: <Link href="/profile">Profile</Link>,
-    key: "link-to-profile",
-  },
-  {
-    label: (
-      <Input.Search
-        enterButton
-        style={{
-          verticalAlign: "middle",
-        }}
-      />
-    ),
-    key: "search",
-  },
-];
 
 const rightMenuItems = [
   {
@@ -70,11 +49,46 @@ const ChildrenContainer = styled.div`
 
 const AppLayout = ({ children }) => {
   const { me } = useSelector((state) => state.user);
+  const [searchInput, setSearchInput] = useState("");
+
+  const onSearchInput = (e) => {
+    setSearchInput(e.target.value);
+  };
+
+  const onSearch = () => {
+    Router.push(`/hashtags/${searchInput}`);
+  };
 
   return (
     <div>
       {/*상단 메뉴*/}
-      <Menu mode="horizontal" items={topMenuItems} />
+      <Menu
+        mode="horizontal"
+        items={[
+          {
+            label: <Link href="/">Twitter</Link>,
+            key: "link-to-home",
+          },
+          {
+            label: <Link href="/profile">Profile</Link>,
+            key: "link-to-profile",
+          },
+          {
+            label: (
+              <Input.Search
+                value={searchInput}
+                onChange={onSearchInput}
+                onSearch={onSearch}
+                enterButton
+                style={{
+                  verticalAlign: "middle",
+                }}
+              />
+            ),
+            key: "search",
+          },
+        ]}
+      />
       {/*레이아웃*/}
       <Row gutter={8}>
         <Col xs={24} md={6}>
