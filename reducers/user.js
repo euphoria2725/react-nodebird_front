@@ -174,7 +174,7 @@ export default (state = initialState, action) => {
         ...state,
         me: {
           ...state.me,
-          Posts: [action.data, ...state.me.Posts],
+          Posts: [{ id: action.data.id }, ...state.me.Posts],
         },
       };
     // REMOVE_POST_OF_ME

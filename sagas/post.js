@@ -43,6 +43,7 @@ function loadPostsAPI(data) {
 
 function* loadPosts(action) {
   try {
+    console.log("hello");
     const result = yield call(loadPostsAPI, action.data);
     yield put({
       type: LOAD_POSTS_SUCCESS,
@@ -201,6 +202,10 @@ function* retweet(action) {
     const result = yield call(retweetAPI, action.data);
     yield put({
       type: RETWEET_SUCCESS,
+      data: result.data,
+    });
+    yield put({
+      type: ADD_POST_TO_ME,
       data: result.data,
     });
   } catch (error) {

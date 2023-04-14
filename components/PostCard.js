@@ -118,11 +118,11 @@ const PostCard = ({ post }) => {
           </Popover>,
         ]}
         title={
-          post.retweet_user_nickname ? (
+          post.Retweeter ? (
             <>
               <RetweetOutlined />
               <span style={{ display: "inline-block", marginLeft: "10px" }}>
-                {post.retweet_user_nickname} Retweeted
+                {post.Retweeter.nickname} Retweeted
               </span>
             </>
           ) : null
