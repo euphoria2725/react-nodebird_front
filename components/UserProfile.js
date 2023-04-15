@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Card, Avatar, Button } from "antd";
 import styled from "styled-components";
 
-import { logoutRequestAction } from "../reducers/user";
+import { LOG_OUT_REQUEST } from "../reducers/user";
 
 const NumberWrapper = styled.span`
   display: inline-block;
@@ -15,24 +15,32 @@ const UserProfile = () => {
   const { me, logOutLoading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
-  const onLogout = useCallback(() => {
-    dispatch(logoutRequestAction());
-  }, []);
+  const onLogout = () => {
+    dispatch({
+      type: LOG_OUT_REQUEST,
+    });
+  };
 
   return (
     <Card
       actions={[
         <div key="twit">
-          <NumberWrapper>{me.Posts.length}</NumberWrapper>
-          <span>Tweets</span>
+          <Link href={`/users/${me.id}`}>
+            <NumberWrapper>{me.Posts.length}</NumberWrapper>
+            <span>Tweets</span>
+          </Link>
         </div>,
         <div key="following">
-          <NumberWrapper>{me.Followings.length}</NumberWrapper>
-          <span>Following</span>
+          <Link href="/profile">
+            <NumberWrapper>{me.Followings.length}</NumberWrapper>
+            <span>Following</span>
+          </Link>
         </div>,
         <div key="follower">
-          <NumberWrapper>{me.Followers.length}</NumberWrapper>
-          <span>Followers</span>
+          <Link href="/profile">
+            <NumberWrapper>{me.Followers.length}</NumberWrapper>
+            <span>Followers</span>
+          </Link>
         </div>,
       ]}
     >

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { Form, Input, Button } from "antd";
 
-import { loginRequestAction } from "../reducers/user";
+import { LOG_IN_REQUEST } from "../reducers/user";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -18,22 +18,28 @@ const LoginForm = () => {
     }
   }, [logInError]);
 
-  const onChangeEmail = useCallback((e) => {
+  const onChangeEmail = (e) => {
     setEmail(e.target.value);
-  }, []);
+  };
 
-  const onChangePassword = useCallback((e) => {
+  const onChangePassword = (e) => {
     setPassword(e.target.value);
-  }, []);
+  };
 
-  const onSubmitForm = useCallback(() => {
-    dispatch(loginRequestAction({ email, password }));
-  }, [email, password]);
+  const onSubmitForm = () => {
+    dispatch({
+      type: LOG_IN_REQUEST,
+      data: {
+        email,
+        password,
+      },
+    });
+  };
 
   return (
     <Form onFinish={onSubmitForm} style={{ padding: "10px" }}>
       <div>
-        <label htmlFor="user-email">이메일</label>
+        <label htmlFor="user-email">Email</label>
         <br />
         <Input
           name="user-email"
@@ -43,7 +49,7 @@ const LoginForm = () => {
         />
       </div>
       <div>
-        <label htmlFor="user-password">비밀번호</label>
+        <label htmlFor="user-password">Password</label>
         <br />
         <Input
           name="user-password"
