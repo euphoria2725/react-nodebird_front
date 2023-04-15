@@ -17,7 +17,7 @@ import PostCard from "../components/PostCard";
 import { LOAD_MY_INFO_REQUEST } from "../reducers/user";
 import { LOAD_POSTS_REQUEST } from "../reducers/post";
 
-const antIcon = <LoadingOutlined style={{ fontSize: 30 }} spin />;
+const loadingIcon = <LoadingOutlined style={{ fontSize: 30 }} spin />;
 
 const LoadingWrapper = styled.div`
   display: flex;
@@ -33,53 +33,17 @@ const Home = () => {
   );
   const [ref, inView] = useInView();
 
-  // useEffect(() => {
-  //   // 사용자 정보 요청
-  //   dispatch({ type: LOAD_USER_REQUEST });
-  //
-  //   // 게시글 불러오기(불러온 게시글들이 있다면, 요청하지 않기)
-  //   if (mainPosts.length === 0) {
-  //     dispatch({ type: LOAD_POSTS_REQUEST });
-  //   }
-  // }, []);
-
   useEffect(() => {
-    // onScroll 정의
-    function onScroll() {
-      if (
-        window.scrollY + document.documentElement.clientHeight >
-        document.documentElement.scrollHeight - 300
-      ) {
-        if (hasMorePosts && !loadPostsLoading) {
-          const lastId = mainPosts[mainPosts.length - 1]?.id;
-          dispatch({
-            type: LOAD_POSTS_REQUEST,
-            data: {
-              lastId,
-            },
-          });
-        }
-      }
+    if (inView && hasMorePosts && !loadPostsLoading) {
+      const lastId = mainPosts[mainPosts.length - 1]?.id;
+      dispatch({
+        type: LOAD_POSTS_REQUEST,
+        data: {
+          lastId,
+        },
+      });
     }
-
-    // onScroll 사용
-    window.addEventListener("scroll", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, [hasMorePosts, loadPostsLoading, mainPosts]);
-
-  // useEffect(() => {
-  //   if (inView && hasMorePosts && !loadPostsLoading) {
-  //     const lastId = mainPosts[mainPosts.length - 1]?.id;
-  //     dispatch({
-  //       type: LOAD_POSTS_REQUEST,
-  //       data: {
-  //         lastId,
-  //       },
-  //     });
-  //   }
-  // }, [inView, hasMorePosts, loadPostsLoading, mainPosts]);
+  }, [inView, hasMorePosts, loadPostsLoading, mainPosts]);
 
   return (
     <>
@@ -98,7 +62,7 @@ const Home = () => {
         {/* 로딩 중일 때, 로딩 이모션 효과 불러오기 */}
         {loadPostsLoading ? (
           <LoadingWrapper>
-            <Spin indicator={antIcon} />
+            <Spin indicator={loadingIcon} />
           </LoadingWrapper>
         ) : null}
       </AppLayout>
